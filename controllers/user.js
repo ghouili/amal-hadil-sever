@@ -38,20 +38,20 @@ const login = async (req, res) => {
     try {
         existinguser = await user.findOne({email: email});
     } catch (error) {
-        return res.status(500).json({message: "something went wrong ", data: error});
+        return res.status(500).json({success: false, message: "something went wrong ", data: error});
     }
 
     if (!existinguser) {
-        return res.status(500).json({message: "user doens't exist!!"});
+        return res.status(500).json({success: false, message: "user doens't exist!!"});
     }
 
     const check = await bcrypt.compareSync(password, existinguser.password);
 
     if (!check) {
-        return res.status(500).json({message: "Password is wrong"});
+        return res.status(500).json({success: false, message: "Password is wrong"});
     }
 
-    return res.status(201).json({message: 'success', data: existinguser});
+    return res.status(201).json({success: true, message: 'success', data: existinguser});
 }
 
 
@@ -62,10 +62,10 @@ const GetAll = async (req, res) => {
     try {
         existinguser = await user.find();
     } catch (error) {
-        return res.status(500).json({message: "something went wrong ", data: error});
+        return res.status(500).json({success: false, message: "something went wrong ", data: error});
     }
 
-    return res.status(200).json({messag: 'success', data: existinguser});
+    return res.status(200).json({success: true, message: 'success', data: existinguser});
 }
 
 const FindById = async (req, res) => {
